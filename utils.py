@@ -49,9 +49,69 @@ class Matrix:
             vector = Vector(vector)
             transposed_matrix.append(vector)
         return Matrix(transposed_matrix)
-            
+    
+class Image:
+    def __init__(self,path):
+        # normalized
+        self.pixel_matrix = self.read_pgm(path)
+    
+    def read_pgm(self,path):
+        with open(path) as pgmf:
+            assert pgmf.readline() == 'P2\n'
+            (self.width, self.height) = [int(i) for i in pgmf.readline().split()]
+            depth = int(pgmf.readline())
+            assert depth <= 255
 
-def main():
+            raster = []
+            for y in range(self.height):
+                row = []
+                for y in range(self.width):
+                    row.append(ord(pgmf.read(1))/255)
+                row = Vector(row)
+                raster.append(row)
+            return Matrix(raster)
+    
+    def flatten(self):
+        result = []
+        for row in self.pixel_matrix.rows:
+            for value in row.values:
+                result.append(value)
+        return Vector(result)
+
+class Parameters:
+    def __init__(self,path):
+        self.H = 256
+        self.C = 23
+        self.N = 1024
+        # w is matrix, b is vector
+        self.w1,self.b1,self.w2,self.b2,self.w3,self.b3=self.read_in_params(path)
+
+    def read_in_params(self,path):
+        target = []
+        num_lines = [self.H,1,self.H,1,self.C,1]
+        with open(path) as f:
+            lines = f.readlines()
+            last = 0 #last time read to
+            for i in range(6):
+                start = last
+                end = sum(num_lines[:i+1])
+                lines_slice = lines[start:end]
+                result = []
+                for line in lines_slice:
+                    line = line.strip().split(" ")
+                    line = [float(i) for i in line]
+                    line = Vector(line)
+                    result.append(line)
+                if i%2 == 0:
+                    # w
+                    target.append(Matrix(result))
+                else:
+                    # b
+                    target.append(line)
+                last = end
+        return target[0],target[1],target[2],target[3],target[4],target[5]
+
+def unit_test():
     x1 = Vector([1,2,-1])
     x2 = Vector([4,5,6])
     y = Matrix([x1,x2])
@@ -66,8 +126,40 @@ def main():
 
     """     for i in y3.values:
         print(i) """
-    for i in x1.softmax().values:
-        print(i)
+    #for i in x1.softmax().values:
+    #    print(i)
+    image = Image("pgm/1.pgm")
+    count = 0 
+    for row in image.pixel_matrix.rows:
+        for values in row.values:
+            count+=1
+    #print(count)
+    #image.flatten()
+    #print(len(image.flatten().values))
+    l = Labels("labels.txt")
+    #print(l.label_vector.values)
+    w = Parameters("param.txt").b1.length
+
+def argmax(a):
+    return max(range(len(a)), key=lambda x: a[x])   
+
+def read_in_labels(path):
+        labels = []
+        with open(path) as f:
+            lines = f.readlines()
+            labels = []
+            for line in lines:
+                line = line.strip() 
+                labels.append(int(line))
+        return labels
+
+def compute_accuracy(result,labels):
+    right = 0
+    for x,y in zip(result,labels):
+        if x == y:
+            right+=1
+    return right/len(labels)
+
 
 if __name__ == '__main__':
-    main()
+    unit_test()
