@@ -20,11 +20,10 @@ class Vector:
         return Vector(result)
     
     def softmax(self):
-        result = [math.exp(i) for i in range(self.length)]
+        result = [math.exp(i) for i in self.values]
         s = sum(result)
         result = [i/s for i in result]
         return Vector(result)
-
 
 class Matrix:
     def __init__(self,vectors):
@@ -53,30 +52,22 @@ class Matrix:
 class Image:
     def __init__(self,path):
         # normalized
-        self.pixel_matrix = self.read_pgm(path)
-    
-    def read_pgm(self,path):
-        with open(path) as pgmf:
-            assert pgmf.readline() == 'P2\n'
-            (self.width, self.height) = [int(i) for i in pgmf.readline().split()]
-            depth = int(pgmf.readline())
-            assert depth <= 255
+        self.flattened_vector = Vector(self.read_pgm(path))
 
-            raster = []
-            for y in range(self.height):
-                row = []
-                for y in range(self.width):
-                    row.append(ord(pgmf.read(1))/255)
-                row = Vector(row)
-                raster.append(row)
-            return Matrix(raster)
-    
-    def flatten(self):
-        result = []
-        for row in self.pixel_matrix.rows:
-            for value in row.values:
-                result.append(value)
-        return Vector(result)
+    def read_pgm(self,path):
+        with open(path) as f:
+            lines = f.readlines()
+        # This ignores commented lines
+        for l in list(lines):
+            if l[0] == '#':
+                lines.remove(l)
+        # here,it makes sure it is ASCII format (P2)
+        assert lines[0].strip() == 'P2' 
+        # Converts data to a list of integers
+        data = []
+        for line in lines[1:]:
+            data.extend([int(c)/255 for c in line.split()])
+        return data[3:]
 
 class Parameters:
     def __init__(self,path):
@@ -159,7 +150,6 @@ def compute_accuracy(result,labels):
         if x == y:
             right+=1
     return right/len(labels)
-
 
 if __name__ == '__main__':
     unit_test()
