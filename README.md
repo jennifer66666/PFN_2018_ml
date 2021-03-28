@@ -15,11 +15,11 @@ cd ~/ml
 python3 -m src.main
 ```
 ## Part1
-The principle for my datatype design is introduced later in Appendix 1.
+The principle for my datatype design is introduced later in [Appendix 1](##-Appendix-1).
 ## Part2 
 Accuracy_original of the output from feeding in the original data: **0.83766**
 ## Part3 
-  Expriment on FGSM with different epsilon0 from 0.1 to 1 (step = 0.1) and see the accuracy_various_models as Figure.1. Notice that the larger
+  Expriments on FGSM with epsilon0 range from 0.1 to 1 (step = 0.1) show the accuracy_various_models in Figure.1. Notice that the larger
   epsilon0, the better FGSM performs. Although there is no further research on epsilon0 larger than 1, I guess the proportional relation will keep.
 <p align="center">
   <img src="https://github.com/jennifer66666/PFN_2018_ml/blob/master/acc_epsilon0.png" width="600" height="400" alt="Figure.1."/>
