@@ -15,7 +15,7 @@ cd ~/ml
 python3 -m src.main
 ```
 ## Part1
-The principle for my datatype design is introduced later in [Appendix 1] (##-Appendix-1).
+The principle for my datatype design is introduced later in [Appendix 1](##-appendix-1).
 ## Part2 
 Accuracy_original of the output from feeding in the original data: **0.83766**
 ## Part3 
