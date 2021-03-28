@@ -1,11 +1,6 @@
-### Place 1
-
-Hello, this is some text to fill in this, [here](#place-2), is a link to the second place.
-
 # PFN_2018_ml
 Self-Test for Preferred Network Internship 2018.<br>
-The task description, model weights, and dataset can be found here<br>
-https://github.com/pfnet/intern-coding-tasks/tree/master/2018/ml .
+The task description, model weights, and dataset can be found [here](https://github.com/pfnet/intern-coding-tasks/tree/master/2018/ml) .
 ## Overall usage
 ```
 # download files needed
@@ -19,7 +14,7 @@ cd ~/ml
 python3 -m src.main
 ```
 ## Part1
-The principle for my datatype design is introduced later in [Appendix 1](##appendix-1).
+The principle for my datatype design is introduced later [here](#appendix-1).
 ## Part2 
 Accuracy_original of the output from feeding in the original data: **0.83766**
 ## Part3 
@@ -40,10 +35,4 @@ Random sign model is tried only once here to just verify that FGSM works. Accura
 6. To do calculus outside the range mentioned in 5., we access the content (values/rows) in an object by using vector.values, or matrix.rows.values.
 7. Vector after calculus of its methods is still Vector.
 8. Matrix transpose to a Matrix, and multiply with a Vector to be a Vector.
-
-
-
-
-
-### Place 2
 
