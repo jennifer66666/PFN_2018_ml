@@ -9,6 +9,10 @@ class Vector:
     def sum_with_vector(self,y):
         s = [p+q for p,q in zip(self.values,y.values)]
         return Vector(s)
+    
+    def minus_a_vector(self,y):
+        s = [p-q for p,q in zip(self.values,y.values)]
+        return Vector(s)
 
     def relu(self):
         result = []

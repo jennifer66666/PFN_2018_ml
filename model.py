@@ -12,6 +12,6 @@ class Model:
         y = self.params.w3.multiply_with_a_vector(h2).sum_with_vector(self.params.b3)
         result = y.softmax()
         max_result = argmax(result.values)+1
-        return max_result
+        return {"max_result":max_result,"a1":a1,"a2":a2,"result":result}
 
         
