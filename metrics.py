@@ -9,7 +9,7 @@ def draw_line_chart(acc,epsilon_0):
     plt.xlabel('epsilon0')
     plt.ylabel('acc')
     plt.show()
-    plt.save("acc-epsilon")
+    plt.save("acc-epsilon.png")
 
 if __name__ == '__main__':
     acc = [0.8181818181818182, 0.7402597402597403, 0.6493506493506493, 0.5909090909090909, \
