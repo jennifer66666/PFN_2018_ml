@@ -1,6 +1,6 @@
 # PFN_2018_ml
 Self-Test for Preferred Network Internship 2018.<br>
-The task description, model weights, and dataset can be found [here](https://github.com/pfnet/intern-coding-tasks/tree/master/2018/ml) .
+The task description, model weights, and dataset can be found [here](https://github.com/pfnet/intern-coding-tasks/tree/master/2018/ml).
 ## Overall usage
 ```
 # download files needed
