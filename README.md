@@ -15,8 +15,16 @@ cd ~/ml
 python3 -m src.main
 ```
 ## Part1
-Introduction to the principle for my datatype design and the usage.
-
+Introduction to the principle for my datatype design.
+### Principle
+1. Vector is made over a list of values. Objectivize it by Vector(list_of_values).
+2. Matrix is made over a list of vectors. When there is only one vector, the matrix degenerate to a vector. Objectivize it by Matrix(list_of_vectors).
+3. The fundamental datatypes within Vector and Matrix are both list. So when implement matrix product with a vector, namely Ax, we default that x is column vector and vector in A is row vector. In other words, I don't transpose a vector when put it into a matrix here, although mathematically I should.
+4. Method of an object from Matrix or Vector return a new object of the result, rather than change the obeject.
+5. To do calculus in {vector+/-vector, softmax_vector, matrix_multiply_with_vector, matrix_transpose}, we simply call the method of the object.
+6. To do calculus outside the range mentioned in 5., we access the content (values/rows) in an object by using vector.values, or matrix.rows.values.
+7. Vector after calculus of its methods is still Vector.
+8. Matrix transpose to a Matrix, and multiply with a Vector to be a Vector.
 ## Part2 
 Accuracy_original of the output from feeding in the original data: **0.83766**
 ## Part3 
