@@ -1,9 +1,12 @@
-from .utils import *
-from .model import *
-from .fgsm  import *
+from .utils     import *
+from .model     import *
+from .fgsm      import *
+from .metrics   import *
+import sys
 
-def main():
+def main(argv):
     labels = read_in_labels("labels.txt")
+    times_to_repeat_fgsm = int(argv[1])
     # to store the output from result without fgsm
     result = []
     # to store result output from fgsm models with different epsilon0
@@ -16,7 +19,7 @@ def main():
     for img_name in range(1,155):
         path = "pgm/"+str(img_name)+".pgm"
         x = Image(path).flattened_vector
-        x_fgsmized_list = [fgsm_an_image(x,labels[img_name - 1],epsilon_0,model) for epsilon_0 in epsilon_0_list]
+        x_fgsmized_list = [repeat_fgsm(x,labels,img_name,epsilon_0,model,times_to_repeat_fgsm) for epsilon_0 in epsilon_0_list]
         x_fgsmized_random = fgsm_an_image(x,labels[img_name - 1],0.1,model,for_test=True)
         result.append(model(x)["max_result"])
         result_fgsm_list.append([model(x_fgsmized)["max_result"] for x_fgsmized in x_fgsmized_list])
@@ -30,6 +33,13 @@ def main():
     "acc_fgsm" : acc_various_models,\
     "acc_fgsm_random" : compute_accuracy(result_fgsm_random,labels)}
     print(acc)
+    draw_line_chart(acc["acc_fgsm"],[0.1*i for i in range(1,11)],"repeat"+str(times_to_repeat_fgsm))
+
+def repeat_fgsm(x,labels,img_name,epsilon_0,model,times):
+    for _ in range(times):
+        result = fgsm_an_image(x,labels[img_name - 1],epsilon_0,model)
+        x = result
+    return result
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv)
