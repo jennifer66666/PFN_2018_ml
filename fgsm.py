@@ -4,11 +4,12 @@ from .utils import *
 import random
 
 def fgsm_an_image(x,label,epsilon_0,f,for_test = False):
-    # x is a vector of length 1024 
+    # x is a flattened and normalized image.
     dL_x = compute_dL_x(label,x,f)
     if not for_test:
         epsilon = compute_epsilon(epsilon_0,dL_x)
     else: 
+        # set random sign to show baseline
         epsilon = compute_epsilon(epsilon_0,dL_x,for_test = for_test)
     return x.sum_with_vector(epsilon)
 

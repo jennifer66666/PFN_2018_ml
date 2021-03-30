@@ -4,9 +4,13 @@ from .fgsm  import *
 
 def main():
     labels = read_in_labels("labels.txt")
+    # to store the output from result without fgsm
     result = []
+    # to store result output from fgsm models with different epsilon0
     result_fgsm_list = []
+    # to store result output from random sign
     result_fgsm_random = []
+    # experiment with 10 epsilon0 range from 1 to 10
     epsilon_0_list = [0.1*i for i in range(1,11)]
     model = Model("param.txt")
     for img_name in range(1,155):
@@ -17,6 +21,7 @@ def main():
         result.append(model(x)["max_result"])
         result_fgsm_list.append([model(x_fgsmized)["max_result"] for x_fgsmized in x_fgsmized_list])
         result_fgsm_random.append(model(x_fgsmized_random)["max_result"])
+    # accuracy of mdoels with different epsilon0
     acc_various_models = []
     for i in range(10):
         result_from_single_model = [result_fgsm[i] for result_fgsm in result_fgsm_list]

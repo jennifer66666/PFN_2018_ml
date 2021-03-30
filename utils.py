@@ -55,13 +55,12 @@ class Matrix:
     
 class Image:
     def __init__(self,path):
-        # normalized
+        # Normalized by 255
         self.flattened_vector = Vector(self.read_pgm(path))
 
     def read_pgm(self,path):
         with open(path) as f:
             lines = f.readlines()
-        # This ignores commented lines
         for l in list(lines):
             if l[0] == '#':
                 lines.remove(l)
@@ -78,11 +77,12 @@ class Parameters:
         self.H = 256
         self.C = 23
         self.N = 1024
-        # w is matrix, b is vector
+        # w is a matrix, b is a vector
         self.w1,self.b1,self.w2,self.b2,self.w3,self.b3=self.read_in_params(path)
 
     def read_in_params(self,path):
         target = []
+        # Read the number of lines according to the list
         num_lines = [self.H,1,self.H,1,self.C,1]
         with open(path) as f:
             lines = f.readlines()
@@ -101,39 +101,28 @@ class Parameters:
                     # w
                     target.append(Matrix(result))
                 else:
-                    # b
+                    # b has only 1 line
                     target.append(line)
                 last = end
+        # target 0-5 are w1,b1,w2,b2,w3,b3 respectively.
         return target[0],target[1],target[2],target[3],target[4],target[5]
 
 def unit_test():
+    # test for Vector and Matrix 
     x1 = Vector([1,2,-1])
     x2 = Vector([4,5,6])
     y = Matrix([x1,x2])
-    y2 = x1.sum_with_vector(x2)
-    y3 = y.multiply_with_a_vector(x1)
-    """     for i in y.rows:
-        for j in i.values:
-            print(j)
-    for i in y.transpose().rows:
-        for j in i.values:
-            print(j) """
-
-    """     for i in y3.values:
-        print(i) """
-    #for i in x1.softmax().values:
-    #    print(i)
+    y1 = x1.sum_with_vector(x2)
+    y2 = y.multiply_with_a_vector(x1)
+    assert y.shape == [2,3]
+    assert y1.length == 3
+    assert y2.length == 3
+    # test for Image
     image = Image("pgm/1.pgm")
-    count = 0 
-    for row in image.pixel_matrix.rows:
-        for values in row.values:
-            count+=1
-    #print(count)
-    #image.flatten()
-    #print(len(image.flatten().values))
-    l = Labels("labels.txt")
-    #print(l.label_vector.values)
-    w = Parameters("param.txt").b1.length
+    assert image.flattened_vector.length == 1024
+    # test for Parameters
+    w1 = Parameters("param.txt").w1
+    assert w1.shape == [256, 1024]
 
 def argmax(a):
     return max(range(len(a)), key=lambda x: a[x])   
